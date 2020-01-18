@@ -1,5 +1,5 @@
 {
-  "name": "smelte",
+  "name": "@carevoyance/smelte",
   "description": "UI framework for Svelte using Tailwind CSS",
   "version": "0.2.4",
   "scripts": {
