@@ -88,7 +88,7 @@
       .replace(replace)
       .extend(extend)
       .get();
-    
+
   $: wrapperClasses, wClasses = (new ClassBuilder(wrapperClasses, wrapperDefault))
       .flush()
       .add('select', select || autocomplete)
@@ -179,7 +179,7 @@
   {:else if select && !autocomplete}
     <input
       readonly
-      class="{iClasses}"
+      class="cursor-pointer {iClasses}"
       on:change
       on:input
       on:click
@@ -225,7 +225,7 @@
     {outlined}
     {focused}
     {error} />
-  
+
   {#if showHint}
     <Hint
       {hint}

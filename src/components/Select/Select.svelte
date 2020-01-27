@@ -79,6 +79,14 @@
     );
   }
 
+  function handleInputClick() {
+    if(autocomplete) {
+      showList = true;
+    } else {
+      showList = !showList;
+    }
+  }
+
   const onHideListPanel = () => showList = false;
 </script>
 
@@ -96,7 +104,7 @@
       {labelClasses}
       {inputClasses}
       {prependClasses}
-      on:click={e => (showList = true)}
+      on:click={handleInputClick}
       on:click-append={(e => showList = !showList)}
       on:click
       on:input={filterItems}
