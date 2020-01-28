@@ -1,26 +1,39 @@
 <script>
+  import {
+    AppBar,
+    Tabs,
+    Button,
+    Spacer,
+    List,
+    ListItem,
+    NavigationDrawer,
+    ProgressLinear,
+    Tooltip
+  } from "smelte";
   import { stores } from "@sapper/app";
   import { onMount } from "svelte";
   import { fade } from "svelte/transition";
-
-  import { AppBar } from "smelte";
-  import { Tabs } from "smelte";
-  import { Button } from "smelte";
-  import { Spacer } from "smelte";
-  import { List } from "smelte";
-  import { ListItem } from "smelte";
-  import { NavigationDrawer } from "smelte";
-  import { ProgressLinear } from "smelte";
   import { navMenu, topMenu } from "../utils/menu.js";
-
   import { right, elevation, persistent, showNav } from "stores.js";
+  import dark from "../dark.js";
 
   const { preloading, page } = stores();
 
   let selected = "";
 
+  const darkMode = dark();
+
   $: path = $page.path;
 </script>
+
+<style>
+  .github {
+    transition: 0.3s ease-out;
+  }
+  .github:hover {
+    transform: rotate(360deg);
+  }
+</style>
 
 {#each navMenu as link}
   <a href={link.to} class="hidden">{link.text}</a>
@@ -41,6 +54,21 @@
   </a>
   <Spacer />
   <Tabs navigation items={topMenu} bind:selected={path} />
+
+  <Tooltip>
+    <span slot="activator">
+      <Button
+        bind:value={$darkMode}
+        icon="wb_sunny"
+        small
+        flat
+        remove="p-1 h-4 w-4"
+        iconClass="text-white"
+        iconClasses={i => i.replace('p-4', 'p-3').replace('m-4', 'm-3')}
+        text />
+    </span>
+    {$darkMode ? 'Disable' : 'Enable'} dark mode
+  </Tooltip>
   <div class="md:hidden">
     <Button
       icon="menu"
@@ -52,30 +80,31 @@
       text
       on:click={() => showNav.set(!$showNav)} />
   </div>
-  <a href="https://github.com/matyunya/smelte" class="px-4">
+  <a href="https://github.com/matyunya/smelte" class="px-4 github">
     <img src="/github.png" alt="Github Smelte" width="24" height="24" />
   </a>
 </AppBar>
 
 <main
-  class="container relative p-8 lg:max-w-3xl lg:ml-64 mx-auto mb-10 mt-24
-  md:ml-56 md:max-w-md md:px-3"
+  class="relative p-8 lg:max-w-3xl lg:ml-64 mx-auto mb-10 mt-24 md:ml-56
+  md:max-w-md md:px-3"
   transition:fade={{ duration: 300 }}>
   <NavigationDrawer
     bind:show={$showNav}
     right={$right}
     persistent={$persistent}
     elevation={$elevation}>
-    <h6 class="px-3 ml-1 pb-2 pt-4 text-xs text-gray-900">Components</h6>
+    <h6 class="px-3 ml-1 pb-2 pt-4 text-xs text-gray-900 dark:text-gray-100">
+      Components
+    </h6>
     <List items={navMenu}>
       <span slot="item" let:item class="cursor-pointer">
-        {#if item.to === '/examples/search-bar'}
-          <hr class="mt-4" />
-          <h6 class="px-3 ml-1 pb-2 pt-4 text-xs text-gray-900">Examples</h6>
-        {/if}
         {#if item.to === '/typography'}
           <hr class="mt-4" />
-          <h6 class="px-3 ml-1 pb-2 pt-4 text-xs text-gray-900">Utilities</h6>
+          <h6
+            class="px-3 ml-1 pb-2 pt-4 text-xs text-gray-900 dark:text-gray-100">
+            Utilities
+          </h6>
         {/if}
 
         <a href={item.to}>
@@ -84,7 +113,7 @@
             text={item.text}
             to={item.to}
             selected={path.includes(item.to)}
-            selectedClasses="bg-primary-transLight hover:bg-primary-transLight"
+            selectedClasses="bg-primary-transDark hover:bg-primary-transDark"
             dense
             navigation />
         </a>

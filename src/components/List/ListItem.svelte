@@ -11,15 +11,18 @@
   export let disabled = false;
   export let dense = false;
   export let navigation = false;
-  export const to = "";
   export let selected = false;
   export let tabindex = null;
+  export let wrapperClasses = "hover:bg-gray-transDark relative overflow-hidden transition p-4 cursor-pointer text-gray-700 dark:text-gray-100 flex items-center z-10";
+  export let selectedClasses = "bg-gray-200 dark:bg-gray-700";
+
+  let className = "";
+  export {className as class};
+
+  export let to = "";
   export const item = null;
   export const items = [];
   export const level = null;
-  export let basicClasses = "hover:bg-gray-transDark relative overflow-hidden transition p-4 cursor-pointer text-gray-700 flex items-center z-10";
-  export let itemClasses = "";
-  export let selectedClasses = "bg-gray-200 hover:bg-primary-transDark";
 
   const ripple = createRipple();
   const dispatch = createEventDispatcher();
@@ -27,19 +30,13 @@
   function change() {
     if (disabled) return;
     value = id;
-    dispatch('change', id);
+    dispatch('change', id, to);
   }
 </script>
 
-<style>
-  li:focus {
-    @apply bg-gray-50;
-  }
-</style>
-
 <li
   use:ripple
-  class="{basicClasses} {selected ? selectedClasses : ""}"
+  class="focus:bg-gray-50 dark-focus:bg-gray-700 {wrapperClasses} {selected ? selectedClasses : ""}"
   class:text-sm={navigation}
   class:py-2={dense}
   class:text-gray-600={disabled}
@@ -51,13 +48,13 @@
     <Icon
       class="pr-6"
       small={dense}
-      color={selected && navigation ? 'text-primary-500' : ""}>
+    >
       {icon}
     </Icon>
   {/if}
 
   <div class="flex flex-col p-0">
-    <div class={itemClasses}>
+    <div class={className}>
       <slot>{text}</slot>
     </div>
     {#if subheading}

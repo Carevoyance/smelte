@@ -7,22 +7,13 @@ import { terser } from "rollup-plugin-terser";
 import { string } from "rollup-plugin-string";
 import json from "rollup-plugin-json";
 import config from "sapper/config/rollup.js";
-import getPreprocessor from "svelte-preprocess";
-import postcss from "rollup-plugin-postcss";
 import includePaths from "rollup-plugin-includepaths";
 import alias from "rollup-plugin-alias";
-import path from "path";
+import smelte from "./rollup-plugin-smelte";
+
 const mode = process.env.NODE_ENV;
 const dev = mode === "development";
 const legacy = !!process.env.SAPPER_LEGACY_BUILD;
-
-const preprocess = getPreprocessor({
-  transformers: {
-    postcss: {
-      plugins: require("./postcss.config.js")()
-    }
-  }
-});
 
 const onwarn = (warning, onwarn) =>
   (warning.code === "CIRCULAR_DEPENDENCY" &&
@@ -49,8 +40,7 @@ export default {
       svelte({
         dev,
         hydratable: true,
-        emitCss: true,
-        preprocess
+        emitCss: true
       }),
       resolve(),
       commonjs(),
@@ -102,8 +92,20 @@ export default {
       }),
       svelte({
         generate: "ssr",
-        dev,
-        preprocess
+        dev
+      }),
+      smelte({
+        purge: !dev,
+        whitelistPatterns: [
+          // for Prismjs code highlighting
+          /language/,
+          /namespace/,
+          /token/,
+          // for JS ripple
+          /ripple/,
+          // date picker
+          /w\-.\/7/
+        ]
       }),
       string({
         include: "**/*.txt"
@@ -111,11 +113,7 @@ export default {
       resolve(),
       alias({ smelte: "src/index.js" }),
       includePaths({ paths: ["./src", "./"] }),
-      commonjs(),
-      postcss({
-        plugins: require("./postcss.config.js")(!dev),
-        extract: path.resolve(__dirname, "./static/global.css")
-      })
+      commonjs()
     ],
     external: [].concat(
       require("module").builtinModules ||

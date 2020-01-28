@@ -3,14 +3,15 @@
   import Icon from "../Icon";
   import Ripple from "../Ripple";
 
-  let className = "";
-  export {className as class};
   export let value = "";
   export let label = "";
   export let color = "primary";
   export let checked = false;
   export let disabled = false;
   export let wrapperClasses = "inline-flex items-center mb-2 cursor-pointer z-10";
+
+  let className = "";
+  export {className as class};
 
   const dispatch = createEventDispatcher();
 
@@ -30,9 +31,9 @@
     <div class="relative w-auto h-auto z-0">
       <Ripple color={rippleColor}>
         {#if checked}
-          <Icon class={disabled ? 'text-gray-500' : `text-${color}-500`}>check_box</Icon>
+          <Icon class={disabled ? 'text-gray-500 dark:text-gray-600' : `text-${color}-500 dark:text-${color}-100`}>check_box</Icon>
         {:else}
-          <Icon class={disabled ? 'text-gray-500' : 'text-gray-600'}>
+          <Icon class={disabled ? 'text-gray-500 dark:text-gray-600' : 'text-gray-600 dark:text-gray-300'}>
             check_box_outline_blank
           </Icon>
         {/if}
@@ -40,9 +41,8 @@
     </div>
     <label
       aria-hidden="true"
-      class="pl-2 cursor-pointer"
-      class:text-gray-500={disabled}
-      class:text-gray-700={!disabled}>
+      class="pl-2 cursor-pointer {disabled ? 'text-gray-500 dark:text-gray-600' : 'text-gray-700 dark:text-gray-300'}"
+    >
       {label}
     </label>
   </div>

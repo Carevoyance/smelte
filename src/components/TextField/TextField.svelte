@@ -30,11 +30,12 @@
   // for outlined button label
   export let bgColor = "white";
   export let iconClass = "";
+  export let disabled = false;
 
-  let inputDefault = `transition pb-2 pt-6 px-4 rounded-t text-black w-full`;
-  let wrapperDefault = "mt-2 mb-6 relative text-gray-600";
+  let inputDefault = `transition pb-2 pt-6 px-4 rounded-t text-black dark:text-gray-100 w-full`;
+  let wrapperDefault = "mt-2 mb-6 relative text-gray-600 dark:text-gray-100";
   let appendDefault = "absolute right-0 top-0 pb-2 pr-4 pt-4 text-gray-700 z-10";
-  let prependDefault = "absolute left-0 top-0 text-xs text-gray-700 z-10";
+  let prependDefault = "absolute left-0 top-0 pb-2 pl-2 pt-4 text-xs text-gray-700 z-10";
 
   export let add = "";
   export let remove = "";
@@ -79,11 +80,13 @@
       .add(caret(), !error)
       .add(border(), focused && !error)
       .add('border-gray-600', !error && !focused)
-      .add('bg-gray-100', !outlined)
-      .add('bg-gray-300', focused && !outlined)
+      .add('bg-gray-100 dark:bg-dark-600', !outlined)
+      .add('bg-gray-300 dark:bg-dark-200', focused && !outlined)
       .remove('px-4', prepend)
-      .add('pr-4 pl-6', prepend)
+      .add('pr-4 pl-10', prepend)
       .add(add)
+      .remove('bg-gray-100', disabled)
+      .add('bg-gray-50', disabled)
       .remove(remove)
       .replace(replace)
       .extend(extend)
@@ -94,12 +97,11 @@
       .add('select', select || autocomplete)
       .add('dense', dense)
       .replace({ 'text-gray-600': 'text-error-500' }, error)
+      .add('text-gray-200', disabled)
       .get();
 
-  $: appendClasses, aClasses = (new ClassBuilder(appendClasses, appendDefault))
-      .get();
-  $: prependClasses, pClasses = (new ClassBuilder(prependClasses, prependDefault))
-      .get();
+  $: aClasses = (new ClassBuilder(appendClasses, appendDefault)).get();
+  $: pClasses = (new ClassBuilder(prependClasses, prependDefault)).get();
 
   const props = filterProps([
     'outlined',
@@ -119,20 +121,14 @@
     'prependReverse',
     'color',
     'bgColor',
+    'disabled',
+    'replace',
+    'remove',
+    'small',
   ], $$props);
 
   const dispatch = createEventDispatcher();
 </script>
-
-<style>
-.select {
-  @apply pb-0 mb-0 cursor-pointer;
-  height: 3.5rem;
-}
-.select.dense {
-  height: 2.4rem;
-}
-</style>
 
 <div class={wClasses}>
   <slot name="label">
@@ -157,6 +153,7 @@
       bind:value
       on:change
       on:input
+      {disabled}
       on:click
       on:focus
       {...props}
@@ -168,6 +165,7 @@
       class={iClasses}
       on:change
       on:input
+      {disabled}
       on:click
       on:focus
       on:blur
@@ -182,6 +180,7 @@
       class="cursor-pointer {iClasses}"
       on:change
       on:input
+      {disabled}
       on:click
       on:blur
       on:focus

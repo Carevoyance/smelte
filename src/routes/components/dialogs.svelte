@@ -10,7 +10,7 @@
 
 <Dialog bind:value={showDialog}>
   <h5 slot="title">What do you think?</h5>
-  <div class="text-gray-700">I'm not sure about today's weather.</div>
+  <div class="text-gray-700 dark:text-gray-100">I'm not sure about today's weather.</div>
   <div slot="actions">
     <Button text on:click={() => (showDialog = false)}>Disagree</Button>
     <Button text on:click={() => (showDialog = false)}>Agree</Button>
@@ -19,7 +19,7 @@
 
 <Dialog persistent bind:value={showDialog2}>
   <h5 slot="title">Do you think you can close me by clicking outside?</h5>
-  <div class="text-gray-700">Doubt it.</div>
+  <div class="text-gray-700 dark:text-gray-100">Doubt it.</div>
   <div slot="actions">
     <Button text on:click={() => (showDialog2 = false)}>Yes</Button>
     <Button text on:click={() => (showDialog2 = false)}>No</Button>

@@ -2,38 +2,44 @@ const { addUtility } = require("./src/utils/style.js");
 
 const buildPalette = require("./src/utils/color.js");
 
-const colors = {
+const defaultColors = {
   primary: "#b027b0",
   secondary: "#009688",
   error: "#f44336",
   success: "#4caf50",
-  alert: "#ffeb3b",
+  alert: "#ff9800",
   blue: "#2196f3",
+  dark: "#212121"
 
-  // You should keep only colors that you're using
-  red: "#f44336",
-  pink: "#e91e63",
-  purple: "#9c27b0",
-  "deep-purple": "#673ab7",
-  indigo: "#3f51b5",
-  blue: "#2196f3",
-  "light-blue": "#03a9f4",
-  cyan: "#00bcd4",
-  teal: "#009688",
-  green: "#4caf50",
-  "light-green": "#8bc34a",
-  lime: "#cddc39",
-  yellow: "#ffeb3b",
-  amber: "#ffc107",
-  orange: "#ff9800",
-  "deep-orange": "#ff5722",
-  brown: "#795548"
+  // These are material palette colors. You should keep only colors that you're using.
+  // red: "#f44336",
+  // pink: "#e91e63",
+  // purple: "#9c27b0",
+  // "deep-purple": "#673ab7",
+  // indigo: "#3f51b5",
+  // blue: "#2196f3",
+  // "light-blue": "#03a9f4",
+  // cyan: "#00bcd4",
+  // teal: "#009688",
+  // green: "#4caf50",
+  // "light-green": "#8bc34a",
+  // lime: "#cddc39",
+  // yellow: "#ffeb3b",
+  // amber: "#ffc107",
+  // orange: "#ff9800",
+  // "deep-orange": "#ff5722",
+  // brown: "#795548"
 };
 
-module.exports = {
-  variants: {
-    backgroundColor: ["hover"]
-  },
+module.exports = ({ colors = defaultColors, darkMode = true, ...config }) => ({
+  variants: darkMode
+    ? {
+        backgroundColor: ["dark", "dark-hover", "hover"],
+        borderColor: ["dark", "dark-focus"],
+        textColor: ["dark", "dark-hover", "dark-active"],
+        border: ["dark"]
+      }
+    : {},
   theme: {
     extend: {
       width: {
@@ -72,11 +78,12 @@ module.exports = {
     colors: {
       transparent: "transparent",
       white: "#fff",
-      "white-trans": "rgba(255,255,255,0.5)",
-      "white-transLight": "rgba(255,255,255,0.6)",
+      "white-trans": "rgba(255,255,255,0.2)",
+      "white-transLight": "rgba(255,255,255,0.2)",
       "white-transDark": "rgba(255,255,255,0.2)",
-      "black-trans": "rgba(0,0,0,0.5)",
-      "black-transLight": "rgba(0,0,0,0.7)",
+      "black-trans": "rgba(0,0,0,0.2)",
+      "black-transLight": "rgba(0,0,0,0.2)",
+      "black-transLight": "rgba(0,0,0,0.2)",
       "black-transDark": "rgba(0,0,0,0.35)",
       "white-500": "#fff",
       black: "#000",
@@ -95,7 +102,7 @@ module.exports = {
         "800": "#4e342e",
         "900": "#3e2723",
         trans: "rgba(62,39,35,0.5)",
-        transLight: "rgba(62,39,35,0.7)",
+        transLight: "rgba(62,39,35,0.1)",
         transDark: "rgba(62,39,35,0.35)"
       },
 
@@ -111,7 +118,7 @@ module.exports = {
         "800": "#424242",
         "900": "#212121",
         trans: "rgba(250, 250, 250, 0.5)",
-        transLight: "rgba(250, 250, 250, 0.6)",
+        transLight: "rgba(250, 250, 250, 0.1)",
         transDark: "rgba(100, 100, 100, 0.2)"
       },
 
@@ -133,6 +140,7 @@ module.exports = {
     }
   },
   plugins: [
+    require("tailwind-css-variables")(),
     require("tailwindcss-elevation")(["hover"]),
     function({ addUtilities }) {
       return addUtilities({
@@ -157,6 +165,35 @@ module.exports = {
     addUtility({
       prop: "stroke",
       className: ".stroke"
-    })
-  ]
-};
+    }),
+    darkMode &&
+      function({ addVariant, e }) {
+        const d = ".mode-dark";
+
+        addVariant("dark", ({ modifySelectors, separator }) => {
+          modifySelectors(({ className }) => {
+            return `${d} .${e(`dark${separator}${className}`)}`;
+          });
+        });
+
+        addVariant("dark-hover", ({ modifySelectors, separator }) => {
+          modifySelectors(({ className }) => {
+            return `${d} .${e(`dark-hover${separator}${className}`)}:hover`;
+          });
+        });
+
+        addVariant("dark-focus", ({ modifySelectors, separator }) => {
+          modifySelectors(({ className }) => {
+            return `${d} .${e(`dark-focus${separator}${className}`)}:focus`;
+          });
+        });
+
+        addVariant("dark-active", ({ modifySelectors, separator }) => {
+          modifySelectors(({ className }) => {
+            return `${d} .${e(`dark-active${separator}${className}`)}:active`;
+          });
+        });
+      }
+  ],
+  ...config
+});

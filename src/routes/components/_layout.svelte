@@ -16,5 +16,4 @@
 {#if segment}
   <h4 class="capitalize pb-8">{name}</h4>
 {/if}
-
 <slot />
