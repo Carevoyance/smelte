@@ -1,5 +1,8 @@
 <script>
-  import { Snackbar, notifier, Button, Notifications, TextField } from "smelte";
+  import Snackbar, { notifier, Notifications } from "components/Snackbar";
+  import Button from "components/Button";
+  import TextField from "components/TextField";
+
   import Code from "docs/Code.svelte";
   import snackbars from "examples/snackbars.txt";
 
@@ -84,10 +87,12 @@
 
 <Button
   disabled={!message}
+  color="alert"
   on:click={alert}>Alert message</Button>
 
 <Button
   disabled={!message}
+  color="error"
   on:click={error}>Error message</Button>
 
 <Notifications />

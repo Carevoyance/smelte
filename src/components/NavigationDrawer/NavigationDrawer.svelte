@@ -3,17 +3,24 @@
   import { quadIn } from "svelte/easing";
   import { Scrim } from "../Util";
   import breakpoints from "../../breakpoints";
+  import { ClassBuilder } from "../../utils/classes.js";
 
   const bp = breakpoints();
+
+  const classesDefault = "fixed top-0 md:mt-16 w-auto drawer overflow-hidden h-full";
+  const navClassesDefault = `h-full w-full bg-white dark:bg-gray-900 dark:text-gray-200 absolute flex w-auto z-20 drawer
+    pointer-events-auto overflow-y-auto`;
 
   export let right = false;
   export let persistent = false;
   export let elevation = true;
-  export let show = $bp !== 'sm';
-  export let asideClasses = "fixed top-0 md:mt-16 w-auto drawer overflow-hidden";
-  export let navClasses = `h-full w-full bg-white dark:bg-gray-900 dark:text-gray-200 absolute flex w-auto z-20 drawer
-    pointer-events-auto overflow-y-auto`;
-  export let borderClasses = "border-gray-400 border-r border-l";
+  export let show = true;
+  export let classes = classesDefault;
+  export let navClasses = navClassesDefault;
+  export let borderClasses = `border-gray-600 ${right ? "border-l" : "border-r"}`;
+
+  let className = "";
+  export {className as class};
 
   export let transitionProps = {
     duration: 200,
@@ -25,11 +32,35 @@
   $: transitionProps.x = right ? 300 : -300;
   $: persistent = show = $bp !== "sm";
 
+  const cb = new ClassBuilder(classes, classesDefault);
+
+  if ($bp === 'sm') show = false;
+
+  $: c = cb
+    .flush()
+    .add(classes, true, classesDefault)
+    .add(borderClasses, !elevation && persistent)
+    .add(className)
+    .add("right-0", right)
+    .add("left-0", !right)
+    .add("pointer-events-none", persistent)
+    .add("z-50", !persistent)
+    .add("elevation-4", elevation)
+    .add("z-20", persistent)
+    .get();
+
+  const ncb = new ClassBuilder(navClasses, navClassesDefault);
+
+  $: n = ncb
+    .flush()
+    .add(navClasses, true, navClassesDefault)
+    .get();
+
 </script>
 
 <style>
   .drawer {
-    min-width: 216px;
+    min-width: 250px;
   }
 
   .aside {
@@ -39,15 +70,7 @@
   
 {#if show}
   <aside
-    class="{asideClasses} {!elevation && persistent ? borderClasses : ""}"
-    class:right-0={right}
-    class:aside={$bp !== "sm"}
-    class:h-full={$bp === "sm"}
-    class:left-0={!right}
-    class:pointer-events-none={persistent}
-    class:z-50={!persistent}
-    class:elevation-4={elevation}
-    class:z-20={persistent}
+    class={c}
     transition:fly={transitionProps}
   >
     {#if !persistent}
@@ -55,7 +78,7 @@
     {/if}
     <nav
       role="navigation"
-      class={navClasses}
+      class={n}
     >
       <div class="w-full">
         <slot />

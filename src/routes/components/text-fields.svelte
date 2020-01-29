@@ -1,9 +1,16 @@
 <script>
-  import { TextField, DataTable, Label } from "smelte";
+  import TextField, { Label } from "components/TextField";
+  import DataTable from "components/DataTable";
   import Code from "docs/Code.svelte";
   import PropsTable from "docs/PropsTable.svelte";
   import textFields from "examples/text-fields.txt";
 </script>
+
+<blockquote
+  class="pl-8 mt-2 mb-10 border-l-8 border-primary-300 text-lg"
+  cite="https://material.io/components/text-fields/#">
+  <p>Text fields let users enter and edit text.</p>
+</blockquote>
 
 <h6 class="mb-3 mt-6">Basic</h6>
 <TextField label="Test label" />

@@ -35,14 +35,14 @@
 
   let className = classesDefault;
   export {className as class};
-  export let wrapperClasses = wrapperDefault;
+  export let classes = wrapperDefault;
 
   const cb = new ClassBuilder(className, classesDefault);
-  const wrapperCb = new ClassBuilder(wrapperClasses, wrapperDefault);
+  const wrapperCb = new ClassBuilder(classes, wrapperDefault);
 
-  let classes = "";
-  let wClasses = "";
+  let wClasses = i => i;
   let tm;
+  let node;
 
   let bg = () => {};
 
@@ -51,26 +51,14 @@
     bg = u.bg;
   }
 
-  // Classes string update properly but aren't applied to the div
-  // hence the temporary with hardcoded values.
-  $: classes = cb
-      .flush()
-      .add(bg(800), color)
-      .add("right-0 mr-2", right)
-      .add("top-0 mt-2", top)
-      .add("left-0 ml-2", left)
-      .add("bottom-0", bottom)
-      .add("snackbar", !noAction)
-      .get();
-
   $: {
     hash = hash || (value ? btoa(`${value}${new Date().valueOf()}`) : null);
     value = value;
   }
 
-  const toggler = () => toggle(value, hash);
+  $: toggler = () => toggle(value, hash);
 
-  $: if (value && (running !== hash)) {
+  $: if (value) {
     queue.update(u => [...u, toggler]);
   }
 
@@ -98,7 +86,21 @@
     }, timeout);
   }
 
+  $: c = cb
+      .flush()
+      .add(bg(800), color)
+      .add("right-0 mr-2", right)
+      .add("top-0 mt-2", top)
+      .add("left-0 ml-2", left)
+      .add("bottom-0", bottom)
+      .add("snackbar", !noAction)
+      .get();
+
+  // for some reason it doesn't get updated otherwise
+  $: if (node) node.classList = c;
+
   wClasses = wrapperCb
+    .flush()
     .add(`text-${text}`)
     .get();
 </script>
@@ -115,12 +117,9 @@
   >
     <div class={wClasses}>
       <div
+        bind:this={node}
         in:scale={inProps}
         out:fade={outProps}
-        class={classes}
-        class:bg-error-800={color === 'error'}
-        class:bg-gray-800={color === 'gray'}
-        class:bg-alert-800={color === 'alert'}
         on:click={() => value = false}>
         <slot /> 
         {#if !noAction}

@@ -1,10 +1,17 @@
 <script>
-  import { Button, Icon } from "smelte";
+  import Button from "components/Button";
+  import Icon from "components/Icon";
   import Code from "docs/Code.svelte";
   import PropsTable from "docs/PropsTable.svelte";
 
   import buttons from "examples/buttons.txt";
 </script>
+
+<blockquote
+  class="pl-8 mt-2 mb-10 border-l-8 border-primary-300 text-lg"
+  cite="https://material.io/components/buttons/">
+  <p>Buttons allow users to take actions, and make choices, with a single tap.</p>
+</blockquote>
 
 <h6 class="mb-3 mt-6">Basic</h6>
 <div class="py-2">
@@ -74,7 +81,7 @@
   <Button block disabled>Button</Button>
 </div>
 
-<h6 class="mb-3 mt-6">FAB <a href="https://material.io/components/buttons-floating-action-button/">(Floating action button)</a></h6>
+<h6 class="mb-3 mt-6">FAB <a class="a" href="https://material.io/components/buttons-floating-action-button/">(Floating action button)</a></h6>
 <div class="py-2">
   <Button color="alert" icon="change_history" />
 </div>
