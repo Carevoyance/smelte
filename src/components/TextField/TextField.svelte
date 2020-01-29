@@ -61,7 +61,6 @@
   export let extend = () => {};
 
   export let focused = false;
-  let iClasses = i => i;
   let wClasses = i => i;
   let aClasses = i => i;
   let pClasses = i => i;
@@ -90,6 +89,7 @@
       .add(add)
       .remove('bg-gray-100', disabled)
       .add('bg-gray-50', disabled)
+      .add('cursor-pointer', select && !autocomplete)
       .remove(remove)
       .replace(replace)
       .extend(extend)
