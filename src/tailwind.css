@@ -124,7 +124,7 @@ input[type="range"]:focus::range-track {
 }
 
 th:first-child, td:first-child {
-  @apply text-left border-r border-gray-200;
+  @apply text-left;
 }
 
 th:first-child .sort-wrapper {
