@@ -1,7 +1,7 @@
 {
   "name": "@carevoyance/smelte",
   "description": "UI framework for Svelte using Tailwind CSS",
-  "version": "1.0.3",
+  "version": "1.0.11",
   "scripts": {
     "dev": "sapper dev -p 7777",
     "build": "rollup -c --config rollup-publish.config.js",
@@ -21,7 +21,8 @@
     "src/components",
     "tailwind.config.js",
     "postcss.config.js",
-    "src/dark.js"
+    "src/dark.js",
+    "rollup-plugin-smelte.js"
   ],
   "module": "dist/module.js",
   "main": "dist/index.js",
@@ -31,6 +32,7 @@
     "@fullhuman/postcss-purgecss": "^1.2.0",
     "autoprefixer": "^9.5.1",
     "cssnano": "^4.1.10",
+    "merge-deep": "^3.0.2",
     "postcss": "^7.0.16",
     "postcss-import": "^12.0.1",
     "postcss-input-range": "^4.0.0",

@@ -18,7 +18,7 @@
   export let locale = "default";
   export let todayClasses = "text-primary-600 rounded-full border border-primary-600";
   export let selectedClasses = "bg-primary-600 text-white rounded-full";
-  export let closeOnSelect = false;
+  export let closeOnSelect = true;
 
   let hasUserValue = Boolean(value);
 
@@ -45,6 +45,7 @@
 <Menu bind:open>
   <div slot="activator">
     <TextField
+      classes={i => i.replace('mb-6', '')}
       value={displayValue}
       {label}
       append={defaultIcon}
@@ -52,7 +53,7 @@
       on:change={changeTextInput}
     />
   </div>
-  <div slot="menu" class="absolute z-20 bg-white dark:bg-dark-400 mt-16">
+  <div slot="menu">
     {#if open}
       <Picker
         bind:value

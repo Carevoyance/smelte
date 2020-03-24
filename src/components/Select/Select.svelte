@@ -21,7 +21,7 @@
   export let placeholder = "";
   export let hint = "";
   export let error = false;
-  export let append = "";
+  export let append = "arrow_drop_down";
   export let dense = false;
   export let persistentHint = false;
   export let autocomplete = false;
@@ -49,20 +49,6 @@
   let filteredItems = items;
   let itemsProcessed = [];
 
-  const props = {
-    outlined,
-    label,
-    placeholder,
-    hint,
-    error,
-    append,
-    persistentHint,
-    color,
-    add,
-    remove,
-    replace,
-    noUnderline,
-  };
 
   function process(it) {
     return it.map(i => typeof i !== "object"
@@ -121,7 +107,18 @@
       focused={showList}
       {autocomplete}
       value={selectedLabel}
-      {...props}
+      {outlined}
+      {label}
+      {placeholder}
+      {hint}
+      {error}
+      {append}
+      {persistentHint}
+      {color}
+      {add}
+      {remove}
+      {replace}
+      {noUnderline}
       class={inputWrapperClasses}
       {appendClasses}
       {labelClasses}
@@ -131,7 +128,6 @@
       on:click-append={(e => showList = !showList)}
       on:click
       on:input={filterItems}
-      append="arrow_drop_down"
       appendReverse={showList}
     />
   </slot>
