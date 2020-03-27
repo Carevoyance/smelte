@@ -142,6 +142,7 @@
       {prepend}
       {color}
       {bgColor}
+      add="truncate w-full"
     >{label}</Label>
   </slot>
 
