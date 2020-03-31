@@ -25,7 +25,7 @@
   export let replace = {};
 
   const classesDefault = 'py-2 px-4 uppercase text-sm font-medium relative overflow-hidden';
-  const basicDefault = 'text-white transition';
+  const basicDefault = 'text-white duration-200 ease-in';
   const outlinedDefault = 'bg-transparent border border-solid';
   const textDefault = 'bg-transparent border-none px-4 hover:bg-transparent';
   const iconDefault = 'p-4 flex items-center';
@@ -47,7 +47,7 @@
   fab = fab || (text && icon);
   const basic = !outlined && !text && !fab;
   const elevation = (basic || icon) && !disabled && !flat && !text;
-  
+
   let Classes = i => i;
   let iClasses = i => i;
   let shade = 0;

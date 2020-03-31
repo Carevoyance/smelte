@@ -57,7 +57,8 @@
   <div
     class="bg-{color}-500 h-1 absolute"
     class:inc={!progress}
-    class:transition={progress}
+    class:duration-200={progress}
+    class:ease-in={progress}
     style={progress ? `width: ${progress}%` : ""} />
   <div class="bg-{color}-500 h-1 absolute dec" class:hidden={progress} />
 </div>

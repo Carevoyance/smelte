@@ -76,7 +76,7 @@ input::-webkit-inner-spin-button {
 }
 
 .mode-dark {
-  @apply text-gray-100 pointer-events-auto bg-dark-500 transition-fast;
+  @apply text-gray-100 pointer-events-auto bg-dark-500 duration-100;
 }
 
 
